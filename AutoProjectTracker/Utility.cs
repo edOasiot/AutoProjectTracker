@@ -390,7 +390,26 @@ namespace AutoProjectTracker
                 sql += field.Name + " ";
                 sql += GetDBFieldName(field.PropertyType.Name) + ",";
             }
+
             sql = sql.Substring(0, sql.Length - 1) + ")";
+
+            return fields;
+        }
+
+        public static List<string> GetListTableFields(Type type, ref string sql, string ListColumnsNotShown)
+        {
+            List<string> fields = new List<string>();
+
+            foreach (PropertyInfo field in type.GetProperties())
+            {
+                if (ListColumnsNotShown != null && ListColumnsNotShown.Split(',').Contains(field.Name))
+                    continue;
+
+                fields.Add(field.Name);
+                sql += field.Name + ",";
+            }
+
+            sql = sql.Substring(0, sql.Length - 1);
 
             return fields;
         }

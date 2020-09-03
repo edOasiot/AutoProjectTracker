@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoProjectTracker
 {
-    class Project
+    public class Project
     {
         public string ProjectName { get; set; }
         public string OwnerName { get; set; }

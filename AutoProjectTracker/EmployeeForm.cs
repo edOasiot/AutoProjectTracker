@@ -15,6 +15,7 @@ namespace AutoProjectTracker
             KeyColumnValue = Username;
             TableType = "Employee";
 
+            SetDBConnection();
             ReadRecord();
         }
 

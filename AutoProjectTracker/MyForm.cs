@@ -17,13 +17,12 @@ namespace AutoProjectTracker
         public string KeyColumn;
         public string KeyColumnValue;
         public string TableType;
+        public string ListColumnsNotShown;
         public SQLiteConnection dbConnection;
         public SQLiteDataAdapter adapter;
         public MyForm()
         {
             InitializeComponent();
-
-            SetDBConnection();
         }
 
         public void SetDBConnection()
@@ -35,7 +34,7 @@ namespace AutoProjectTracker
                 dbConnection.Open();
         }
 
-        public void ReadRecord()
+        public object ReadRecord()
         {
             String sql = "select * from " + TableName;
             sql += " Where " + KeyColumn + " = '" + KeyColumnValue + "'";
@@ -52,8 +51,36 @@ namespace AutoProjectTracker
             }
             catch { }
 
-            if (records.Count.Equals(1))
+            if (records != null && records.Count.Equals(1))
+            {
                 SetTextBoxValues(records[0]);
+                return records[0];
+            }
+            else
+                return null;
+        }
+
+        public List<T> ReadRecords<T>() where T : class, new()
+        {
+            String sql = "select ";
+            Utility.GetListTableFields(typeof(Project), ref sql, ListColumnsNotShown);
+            sql += " from " + TableName;
+
+            if (KeyColumnValue != null)
+                sql += " Where " + KeyColumn + " = '" + KeyColumnValue + "'";
+
+            adapter = new SQLiteDataAdapter(sql, dbConnection);
+            DataSet dataSet = new DataSet();
+
+            try
+            {
+                adapter.Fill(dataSet);
+                DataTable dtt = dataSet.Tables[0];
+                return dtt.DataTableToList<T>();
+            }
+            catch { }
+
+            return null;
         }
 
         public void UpdateRecord()
@@ -80,7 +107,12 @@ namespace AutoProjectTracker
         {
             foreach (Control control in this.Controls)
                 if (control.GetType().Equals(typeof(TextBox)))
-                    Utility.SetPropValue(control, "Text", Utility.GetPropValue(dBclass, control.Name).ToString());
+                {
+                    object o = Utility.GetPropValue(dBclass, control.Name);
+
+                    if (o != null)
+                        Utility.SetPropValue(control, "Text", o.ToString());
+                }
         }
 
         public Dictionary<string, string> SaveTextBoxValues()
