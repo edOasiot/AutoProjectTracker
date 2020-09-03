@@ -55,6 +55,7 @@
             this.Zip = new System.Windows.Forms.TextBox();
             this.State = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.CancelB = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // FirstName
@@ -97,6 +98,7 @@
             this.SaveB.TabIndex = 27;
             this.SaveB.Text = "Save";
             this.SaveB.UseVisualStyleBackColor = true;
+            this.SaveB.Click += new System.EventHandler(this.SaveB_Click);
             // 
             // StartDate
             // 
@@ -274,11 +276,24 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "State:";
             // 
+            // CancelB
+            // 
+            this.CancelB.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelB.Location = new System.Drawing.Point(370, 321);
+            this.CancelB.Name = "CancelB";
+            this.CancelB.Size = new System.Drawing.Size(75, 23);
+            this.CancelB.TabIndex = 29;
+            this.CancelB.Text = "Cancel";
+            this.CancelB.UseVisualStyleBackColor = true;
+            this.CancelB.Click += new System.EventHandler(this.CancelB_Click);
+            // 
             // EmployeeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CancelB;
             this.ClientSize = new System.Drawing.Size(471, 416);
+            this.Controls.Add(this.CancelB);
             this.Controls.Add(this.Role);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
@@ -342,6 +357,7 @@
         private System.Windows.Forms.TextBox Zip;
         private System.Windows.Forms.TextBox State;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button CancelB;
     }
 }
 

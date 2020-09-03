@@ -284,6 +284,7 @@
             this.CancelB.TabIndex = 28;
             this.CancelB.Text = "Cancel";
             this.CancelB.UseVisualStyleBackColor = true;
+            this.CancelB.Click += new System.EventHandler(this.CancelB_Click);
             // 
             // ProjectForm
             // 

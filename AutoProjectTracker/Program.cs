@@ -16,6 +16,9 @@ namespace AutoProjectTracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Utility.ReadSettings();
+            
             Application.Run(new LoginForm());
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,6 +21,41 @@ namespace AutoProjectTracker
                 foreach (var row in table.AsEnumerable())
                 {
                     T obj = new T();
+
+                    foreach (var prop in obj.GetType().GetProperties())
+                    {
+                        try
+                        {
+                            PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
+
+                            propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+
+                    list.Add(obj);
+                }
+
+                return list;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static List<object> DataTableToList(this DataTable table, string TypeName)
+        {
+            try
+            {
+                List<object> list = new List<object>();
+
+                foreach (var row in table.AsEnumerable())
+                {
+                    object obj = Utility.GetInstance(TypeName);
 
                     foreach (var prop in obj.GetType().GetProperties())
                     {
@@ -87,6 +123,5 @@ namespace AutoProjectTracker
                 sw.Close();
             }
         }
-
     }
 }

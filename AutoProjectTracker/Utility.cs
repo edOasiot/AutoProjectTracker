@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace AutoProjectTracker
 {
     public static class Utility
     {
+        public static Settings settings = new Settings();
         public static Object GetFieldValue(this Object obj, String name)
         {
             foreach (String part in name.Split('.'))
@@ -43,7 +46,7 @@ namespace AutoProjectTracker
             return (T)retval;
         }
 
-        public static Object GetPropValue(this Object obj, String name)
+        public static Object GetPropValue(Object obj, String name)
         {
             foreach (String part in name.Split('.'))
             {
@@ -146,18 +149,14 @@ namespace AutoProjectTracker
         //        Thread.Sleep((settings.MarketIntervalMinutes - mod) * 60000);
         //}
 
-        public static Settings ReadSettings()
+        public static void ReadSettings()
         {
-            Settings settings;
-
             string path = LocateSettingFile();
 
             using (StreamReader sr = File.OpenText(path))
             {
                 settings = JsonConvert.DeserializeObject<Settings>(sr.ReadToEnd());
             }
-
-            return settings;
         }
 
         private static string LocateSettingFile()
@@ -178,10 +177,8 @@ namespace AutoProjectTracker
             return path;
         }
 
-        public static Settings UpdateSetting(string key, object value)
+        public static void UpdateSetting(string key, object value)
         {
-            Settings settings = ReadSettings();
-
             string path = LocateSettingFile();
 
             string FileData = File.ReadAllText(path);
@@ -195,7 +192,7 @@ namespace AutoProjectTracker
 
             File.WriteAllText(path, FileData);
 
-            return ReadSettings();
+            ReadSettings();
         }
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(
@@ -208,17 +205,6 @@ namespace AutoProjectTracker
         {
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return serializer.Deserialize<T>(json);
-        }
-
-        public static void SetControlValue(Form form, object dBclass)
-        {
-            foreach (Control control in form.Controls)
-            {
-                if (control.GetType().Equals(typeof(TextBox)))
-                {
-                    Utility.SetPropValue(control, "Text", GetPropValue(dBclass, control.Name).ToString());
-                }
-            }
         }
 
         public static DateTime ParseDateTime(String dt)
@@ -365,8 +351,6 @@ namespace AutoProjectTracker
         {
             try
             {
-                Settings settings = ReadSettings();
-
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("stockminder2020@yahoo.com");
 
@@ -395,6 +379,7 @@ namespace AutoProjectTracker
                 //WriteToLog(@"C:\StockMinderService.txt", "SendMail", ex);
             }
         }
+
         public static List<string> GetTableFields(Type type, ref string sql)
         {
             List<string> fields = new List<string>();
@@ -522,5 +507,11 @@ namespace AutoProjectTracker
 
         //    return newBar;
         //}
+
+        public static object GetInstance(string Namespace)
+        {
+            Type t = Type.GetType(Namespace);
+            return Activator.CreateInstance(t);
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace AutoProjectTracker
 {
     public partial class ProjectForm : Form
     {
-        private Settings settings = new Settings();
         private static SQLiteConnection dbConnection;
         public ProjectForm()
         {
@@ -26,22 +25,20 @@ namespace AutoProjectTracker
 
         private void SetDefaults()
         {
-            settings = settings = Utility.ReadSettings();
-
             if (dbConnection == null)
-                dbConnection = new SQLiteConnection("Data Source=" + settings.AutoProjectTrackerDB + ";Version=3;");
+                dbConnection = new SQLiteConnection("Data Source=" + Utility.settings.AutoProjectTrackerDB + ";Version=3;");
 
             if (!dbConnection.State.Equals(ConnectionState.Open))
                 dbConnection.Open();
 
             if (HourlyRate.Text.Length.Equals(0))
-                HourlyRate.Text = settings.HourlyRate.ToString();
+                HourlyRate.Text = Utility.settings.HourlyRate.ToString();
 
         }
 
         private void ReadRecord(string project)
         {
-            String sql = "select * from " + settings.ProjectTable;
+            String sql = "select * from " + Utility.settings.ProjectTable;
             sql += " Where ProjectName = '" + project + "'";
 
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(sql, dbConnection);
@@ -56,10 +53,13 @@ namespace AutoProjectTracker
             }
             catch { }
 
-            if (projects.Count.Equals(1))
-            {
-                Color.Text = projects[0].Color;
-            }
+            //if (projects.Count.Equals(1))
+            //    Utility.SetTextBoxValues(this, projects[0]);
+        }
+
+        private void CancelB_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
