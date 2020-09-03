@@ -5,8 +5,8 @@
   "Email": "edmelson2020@gmail.com",
 
   "AutoProjectTrackerDB": "C:/Users/ednel/source/repos/AutoProjectTracker/AutoProjectTracker/AutoProjectTracker.sqlite",
-  "MarketWatchTable": "stocks",
-  "CompanyWatchTable": "watch",
-  "EmployeeTable": "Employees"
+  "ProjectTable": "Projects",
+  "EmployeeTable": "Employees",
 
+  "HourlyRate": "75"
 }

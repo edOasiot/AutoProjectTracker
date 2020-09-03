@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutoProjectTracker
 {
@@ -82,9 +83,11 @@ namespace AutoProjectTracker
             return null;
         }
 
-        public static void SetPropValue(this Object obj, String name, object value)
+        public static void SetPropValue(Object obj, String name, object value)
         {
             var propertyInfo = obj.GetType().GetProperty(name);
+            if (propertyInfo == null)
+                return;
             propertyInfo.SetValue(obj, value, null);
         }
 
@@ -205,6 +208,17 @@ namespace AutoProjectTracker
         {
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return serializer.Deserialize<T>(json);
+        }
+
+        public static void SetControlValue(Form form, object dBclass)
+        {
+            foreach (Control control in form.Controls)
+            {
+                if (control.GetType().Equals(typeof(TextBox)))
+                {
+                    Utility.SetPropValue(control, "Text", GetPropValue(dBclass, control.Name).ToString());
+                }
+            }
         }
 
         public static DateTime ParseDateTime(String dt)

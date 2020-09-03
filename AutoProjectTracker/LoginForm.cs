@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace AutoProjectTracker
 {
-    public partial class Login : Form
+    public partial class LoginForm : Form
     {
-        public Login()
+        public LoginForm()
         {
             InitializeComponent();
+        }
+
+        private void LoginB_Click(object sender, EventArgs e)
+        {
+            EmployeeForm employeeForm = new EmployeeForm(UsernameTB.Text);
+            employeeForm.Show();
         }
     }
 }
