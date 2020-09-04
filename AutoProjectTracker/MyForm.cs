@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 
 namespace AutoProjectTracker
@@ -63,11 +64,22 @@ namespace AutoProjectTracker
         public List<T> ReadRecords<T>() where T : class, new()
         {
             String sql = "select ";
-            Utility.GetListTableFields(typeof(Project), ref sql, ListColumnsNotShown);
+            Utility.GetListTableFields(typeof(T), ref sql, ListColumnsNotShown);
             sql += " from " + TableName;
 
             if (KeyColumnValue != null)
-                sql += " Where " + KeyColumn + " = '" + KeyColumnValue + "'";
+            {
+                sql += " Where " ;
+
+                int index = 0;
+                foreach (string keyColumn in  KeyColumn.Split(','))
+                {
+                    sql += keyColumn + " = '" + KeyColumnValue.Split(',')[index] + "' And ";
+                    index++;
+                }
+
+                sql = sql.Substring(0, sql.Length - 5);
+            }
 
             adapter = new SQLiteDataAdapter(sql, dbConnection);
             DataSet dataSet = new DataSet();
@@ -93,7 +105,51 @@ namespace AutoProjectTracker
                     sql += entry.Key + " = '" + entry.Value + "', ";
 
                 sql = sql.Substring(0, sql.Length - 2);
-                sql += " Where " + KeyColumn + " = '" + KeyColumnValue + "'";
+
+                if (KeyColumnValue != null)
+                {
+                    sql += " Where ";
+
+                    int index = 0;
+                    foreach (string keyColumn in KeyColumn.Split(','))
+                    {
+                        sql += keyColumn + " = '" + KeyColumnValue.Split(',')[index] + "' And ";
+                        index++;
+                    }
+
+                    sql = sql.Substring(0, sql.Length - 5);
+                }
+
+                SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                //Utility.WriteToLog(LogFileName, MethodBase.GetCurrentMethod().ReflectedType.FullName, ex);
+            }
+        }
+
+        public void InsertRecord()
+        {
+            try
+            {
+                String sql = "Insert Into " + TableName + " (<columns>) Values (<values>)";
+
+                string columns = "";
+                string values = "";
+
+                foreach (KeyValuePair<string, string> entry in SaveTextBoxValues())
+                {
+                    columns += entry.Key + ", ";
+                    values += "'" + entry.Value + "', ";
+                }
+
+                columns += KeyColumn;
+                values += KeyColumnValue;
+
+                sql = sql.Replace("<columns>", columns);
+                sql = sql.Replace("<values>", values);
+
                 SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -122,9 +178,27 @@ namespace AutoProjectTracker
             foreach (Control control in this.Controls)
                 if (control.GetType().Equals(typeof(TextBox)) && control.Name != KeyColumn)
                     values.Add(control.Name, Utility.GetPropValue(control, "Text").ToString());
+                else if (control.GetType().Equals(typeof(DateTimePicker)))
+                    values.Add(control.Name, Utility.SetDateTime(DateTime.Now.ToShortDateString() + " " + Utility.GetPropValue(control, "Text").ToString()));
 
             return values;
         }
 
+        public decimal CalculateTaskHours(Int32 taskId)
+        {
+            decimal hours = 0;
+
+            try
+            {
+                String sql = "select Sum(Cast ((JulianDay(EndDate) - JulianDay(StartDate)) *24 * 60 As Integer)) from " 
+                    + Utility.settings.TaskHourTable + " Where TaskId = " + taskId;
+
+                SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
+                hours = Math.Round(Convert.ToDecimal(Convert.ToInt32(command.ExecuteScalar()) / 60.00), 2);
+            }
+            catch { }
+
+            return hours;
+        }
     }
 }

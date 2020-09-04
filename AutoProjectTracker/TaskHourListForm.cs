@@ -11,29 +11,24 @@ using System.Windows.Forms;
 
 namespace AutoProjectTracker
 {
-    public partial class ProjectListForm : MyForm
+    public partial class TaskHourListForm : MyForm
     {
-        Employee employee = null;
-        public ProjectListForm(Employee _employee)
+        public TaskHourListForm(Int32 employeeId, Int32 taskId)
         {
             InitializeComponent();
 
-            employee = _employee;
-
             StartPosition = FormStartPosition.Manual;
-            Location = new Point(55, 55);
+            Location = new Point(115, 115);
 
-            TableName = Utility.settings.ProjectTable;
-            KeyColumn = "ProjectName";
-            TableType = "Project";
-
-            if (employee.Role.Equals(Convert.ToInt32(Enums.Roles.Worker)))
-                ListColumnsNotShown = "Phone,Email,HourlyRate,CurrentProfit";
+            TableName = Utility.settings.TaskHourTable;
+            KeyColumn = "EmployeeId,TaskId";
+            KeyColumnValue = employeeId.ToString() + "," + taskId.ToString();
+            TableType = "TaskHour";
 
             SetDBConnection();
 
-            List<Project> projects = ReadRecords<Project>();
-            dataGridView1.DataSource = projects;
+            List<TaskHour> taskHours = ReadRecords<TaskHour>();
+            dataGridView1.DataSource = taskHours;
 
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
@@ -58,11 +53,8 @@ namespace AutoProjectTracker
                 return;
 
             object id = dataGridView1.SelectedRows[0].Cells[0].Value;
-            int index = dataGridView1.Columns["ProjectName"].Index;
+            int index = dataGridView1.Columns["TaskName"].Index;
             Text = dataGridView1.SelectedRows[0].Cells[index].Value.ToString();
-
-            TaskListForm taskListForm = new TaskListForm(employee.Id, Convert.ToInt32(id));
-            taskListForm.ShowDialog();
         }
     }
 }

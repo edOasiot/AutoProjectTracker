@@ -5,8 +5,10 @@
   "Email": "edmelson2020@gmail.com",
 
   "AutoProjectTrackerDB": "C:/Users/ednel/source/repos/AutoProjectTracker/AutoProjectTracker/AutoProjectTracker.sqlite",
-  "ProjectTable": "Projects",
   "EmployeeTable": "Employees",
+  "ProjectTable": "Projects",
+  "TaskTable": "Tasks",
+  "TaskHourTable": "TaskHours",
 
   "HourlyRate": "75"
 }

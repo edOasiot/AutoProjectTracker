@@ -28,10 +28,14 @@ namespace AutoProjectTracker
                         {
                             PropertyInfo propertyInfo = obj.GetType().GetProperty(prop.Name);
 
+                            if (propertyInfo.PropertyType.Equals(typeof(DateTime)))
+                                ;
+
                             propertyInfo.SetValue(obj, Convert.ChangeType(row[prop.Name], propertyInfo.PropertyType), null);
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            string msg = ex.Message;
                             continue;
                         }
                     }

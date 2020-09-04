@@ -446,7 +446,7 @@ namespace AutoProjectTracker
         }
         public static string SetDateTime(object value)
         {
-            return "'" + DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd HH:mm:ss") + "'";
+            return DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public static double WeightedAverage<T>(this IEnumerable<T> records, Func<T, double> value, Func<T, double> weight)

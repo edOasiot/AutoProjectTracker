@@ -1,6 +1,6 @@
 ﻿namespace AutoProjectTracker
 {
-    partial class ProjectListForm
+    partial class TaskListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -40,16 +40,17 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1052, 475);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridView1_RowStateChanged);
             // 
-            // ProjectListForm
+            // TaskListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1052, 475);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "ProjectListForm";
-            this.Text = "Projects";
+            this.Name = "TaskListForm";
+            this.Text = "Tasks";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

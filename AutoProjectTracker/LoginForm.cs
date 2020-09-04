@@ -18,6 +18,9 @@ namespace AutoProjectTracker
         {
             InitializeComponent();
 
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(25, 25);
+
             Username.Text = "austin";
 
             TableName = Utility.settings.EmployeeTable;

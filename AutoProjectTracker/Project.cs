@@ -8,6 +8,7 @@ namespace AutoProjectTracker
 {
     public class Project
     {
+        public int Id { get; set; }
         public string ProjectName { get; set; }
         public string OwnerName { get; set; }
         public string Phone { get; set; }
@@ -19,7 +20,7 @@ namespace AutoProjectTracker
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int HourlyRate { get; set; }
-        public int CurrentHours { get; set; }
+        public decimal CurrentHours { get; set; }
         public int CurrentProfit { get; set; }
         public Project()
         {
