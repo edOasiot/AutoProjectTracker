@@ -21,7 +21,7 @@ namespace AutoProjectTracker
             StartPosition = FormStartPosition.Manual;
             Location = new Point(25, 25);
 
-            Username.Text = "austin";
+            Username.Text = "ed";
 
             TableName = Utility.settings.EmployeeTable;
             KeyColumn = "Username";
@@ -48,8 +48,8 @@ namespace AutoProjectTracker
             }
             else
             {
-                ProjectListForm projectListForm = new ProjectListForm(employee);
-                projectListForm.Show();
+                AdminFunctionsForm adminFunctionsForm = new AdminFunctionsForm(employee);
+                adminFunctionsForm.Show();
 
                 //EmployeeForm employeeForm = new EmployeeForm(Username.Text);
                 //employeeForm.Show();
