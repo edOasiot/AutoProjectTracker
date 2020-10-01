@@ -42,11 +42,15 @@
             this.employeeRadioButton = new System.Windows.Forms.RadioButton();
             this.taskEmployeeComboBox = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.allTasksRadioButton = new System.Windows.Forms.RadioButton();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ShowProfitsB
             // 
-            this.ShowProfitsB.Location = new System.Drawing.Point(12, 27);
+            this.ShowProfitsB.Location = new System.Drawing.Point(12, 43);
             this.ShowProfitsB.Name = "ShowProfitsB";
             this.ShowProfitsB.Size = new System.Drawing.Size(111, 23);
             this.ShowProfitsB.TabIndex = 4;
@@ -104,7 +108,7 @@
             // dayRadioButton
             // 
             this.dayRadioButton.AutoSize = true;
-            this.dayRadioButton.Location = new System.Drawing.Point(130, 31);
+            this.dayRadioButton.Location = new System.Drawing.Point(136, 31);
             this.dayRadioButton.Name = "dayRadioButton";
             this.dayRadioButton.Size = new System.Drawing.Size(44, 17);
             this.dayRadioButton.TabIndex = 10;
@@ -116,7 +120,7 @@
             // yearRadioButton
             // 
             this.yearRadioButton.AutoSize = true;
-            this.yearRadioButton.Location = new System.Drawing.Point(299, 31);
+            this.yearRadioButton.Location = new System.Drawing.Point(305, 31);
             this.yearRadioButton.Name = "yearRadioButton";
             this.yearRadioButton.Size = new System.Drawing.Size(47, 17);
             this.yearRadioButton.TabIndex = 11;
@@ -128,7 +132,7 @@
             // monthRadioButton
             // 
             this.monthRadioButton.AutoSize = true;
-            this.monthRadioButton.Location = new System.Drawing.Point(238, 31);
+            this.monthRadioButton.Location = new System.Drawing.Point(244, 31);
             this.monthRadioButton.Name = "monthRadioButton";
             this.monthRadioButton.Size = new System.Drawing.Size(55, 17);
             this.monthRadioButton.TabIndex = 12;
@@ -140,7 +144,7 @@
             // weekRadioButton
             // 
             this.weekRadioButton.AutoSize = true;
-            this.weekRadioButton.Location = new System.Drawing.Point(180, 31);
+            this.weekRadioButton.Location = new System.Drawing.Point(186, 31);
             this.weekRadioButton.Name = "weekRadioButton";
             this.weekRadioButton.Size = new System.Drawing.Size(54, 17);
             this.weekRadioButton.TabIndex = 13;
@@ -152,7 +156,7 @@
             // taskRadioButton
             // 
             this.taskRadioButton.AutoSize = true;
-            this.taskRadioButton.Location = new System.Drawing.Point(130, 54);
+            this.taskRadioButton.Location = new System.Drawing.Point(81, 14);
             this.taskRadioButton.Name = "taskRadioButton";
             this.taskRadioButton.Size = new System.Drawing.Size(49, 17);
             this.taskRadioButton.TabIndex = 14;
@@ -164,7 +168,7 @@
             // employeeRadioButton
             // 
             this.employeeRadioButton.AutoSize = true;
-            this.employeeRadioButton.Location = new System.Drawing.Point(180, 54);
+            this.employeeRadioButton.Location = new System.Drawing.Point(131, 14);
             this.employeeRadioButton.Name = "employeeRadioButton";
             this.employeeRadioButton.Size = new System.Drawing.Size(71, 17);
             this.employeeRadioButton.TabIndex = 15;
@@ -176,7 +180,7 @@
             // taskEmployeeComboBox
             // 
             this.taskEmployeeComboBox.FormattingEnabled = true;
-            this.taskEmployeeComboBox.Location = new System.Drawing.Point(373, 56);
+            this.taskEmployeeComboBox.Location = new System.Drawing.Point(373, 66);
             this.taskEmployeeComboBox.Name = "taskEmployeeComboBox";
             this.taskEmployeeComboBox.Size = new System.Drawing.Size(301, 21);
             this.taskEmployeeComboBox.TabIndex = 16;
@@ -190,6 +194,39 @@
             this.button1.Text = "Reports";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(129, 17);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(228, 37);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Timeframe";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.allTasksRadioButton);
+            this.groupBox2.Controls.Add(this.employeeRadioButton);
+            this.groupBox2.Controls.Add(this.taskRadioButton);
+            this.groupBox2.Location = new System.Drawing.Point(129, 56);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(228, 37);
+            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Type";
+            // 
+            // allTasksRadioButton
+            // 
+            this.allTasksRadioButton.AutoSize = true;
+            this.allTasksRadioButton.Location = new System.Drawing.Point(7, 14);
+            this.allTasksRadioButton.Name = "allTasksRadioButton";
+            this.allTasksRadioButton.Size = new System.Drawing.Size(68, 17);
+            this.allTasksRadioButton.TabIndex = 20;
+            this.allTasksRadioButton.TabStop = true;
+            this.allTasksRadioButton.Text = "All Tasks";
+            this.allTasksRadioButton.UseVisualStyleBackColor = true;
+            this.allTasksRadioButton.CheckedChanged += new System.EventHandler(this.allTasksRadioButton_CheckedChanged);
+            // 
             // AdminFunctionsForm
             // 
             this.AcceptButton = this.ShowProfitsB;
@@ -198,8 +235,6 @@
             this.ClientSize = new System.Drawing.Size(700, 192);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.taskEmployeeComboBox);
-            this.Controls.Add(this.employeeRadioButton);
-            this.Controls.Add(this.taskRadioButton);
             this.Controls.Add(this.weekRadioButton);
             this.Controls.Add(this.monthRadioButton);
             this.Controls.Add(this.yearRadioButton);
@@ -210,8 +245,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.WorkerB);
             this.Controls.Add(this.ShowProfitsB);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox2);
             this.Name = "AdminFunctionsForm";
             this.Text = "Admin Functions";
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,6 +271,9 @@
         private System.Windows.Forms.RadioButton employeeRadioButton;
         private System.Windows.Forms.ComboBox taskEmployeeComboBox;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton allTasksRadioButton;
     }
 }
 
