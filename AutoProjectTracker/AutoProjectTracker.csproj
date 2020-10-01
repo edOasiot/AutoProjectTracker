@@ -105,6 +105,7 @@
     <Compile Include="AdminFunctionsForm.Designer.cs">
       <DependentUpon>AdminFunctionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmployeeRate.cs" />
     <Compile Include="TaskHourForm.cs">
       <SubType>Form</SubType>
     </Compile>

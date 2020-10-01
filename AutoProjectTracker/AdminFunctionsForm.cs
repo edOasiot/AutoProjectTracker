@@ -34,10 +34,14 @@ namespace AutoProjectTracker
 
         private void ShowProfitsB_Click(object sender, EventArgs e)
         {
-            string msgText = "Daily Profit: " + 2 + Environment.NewLine;
-            msgText += "Weekly Profit: " + 2 + Environment.NewLine;
+            string msg = "";
 
-            MessageBox.Show(msgText);
+            msg += "Daily Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) + Environment.NewLine;
+            msg += "Weekly Profit = $" + ReadProfit(Utility.StartOfWeek(DayOfWeek.Sunday)) + Environment.NewLine;
+            msg += "Monthly Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)) + Environment.NewLine;
+            msg += "Yearly Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, 1, 1)) + Environment.NewLine;
+
+            MessageBox.Show(msg);
         }
 
         private void WorkerB_Click(object sender, EventArgs e)
@@ -58,24 +62,49 @@ namespace AutoProjectTracker
 
         }
 
-        public Double ReadProfit()
+        public Double ReadProfit(DateTime dateTime)
         {
-            Double Profit = 0;
-            String sql = "select ";
-            sql += " from " + TableName;
-
-            adapter = new SQLiteDataAdapter(sql, dbConnection);
-            DataSet dataSet = new DataSet();
+            Double profit = 0;
 
             try
             {
+                Double rate = 0;
+
+                String sql = "select Rate from EmployeeRate where EmployeeId = " + employee.Id + " and StartDate <= '" + DateTime.Now + "'";
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(sql, dbConnection);
+                SQLiteDataReader sQLiteDataReader = sQLiteCommand.ExecuteReader();
+                sQLiteDataReader.Read();
+                rate = sQLiteDataReader.GetDouble(0);
+
+                sql = "select * from Tasks";
+                adapter = new SQLiteDataAdapter(sql, dbConnection);
+                DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet);
                 DataTable dtt = dataSet.Tables[0];
-                return Profit;
-            }
-            catch { }
+                List<Task> tasks = dtt.DataTableToList<Task>();
 
-            return 0;
+                sql = "select * from TaskHours where EmployeeId = " + employee.Id + " and StartDate >= '" + Utility.SetDateTime(dateTime) + "'";
+                adapter = new SQLiteDataAdapter(sql, dbConnection);
+                dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                dtt = dataSet.Tables[0];
+                List<TaskHour> taskHours = dtt.DataTableToList<TaskHour>();
+
+                foreach (TaskHour taskHour in taskHours)
+                {
+                    double totalMinutes = (taskHour.EndDate - taskHour.StartDate).TotalMinutes;
+
+                    Task task = tasks.Find(a => a.Id == taskHour.TaskId);
+
+                    profit += totalMinutes * (task.HourlyRate - rate) / 60;
+                }
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+            }
+
+            return profit;
         }
     }
 }

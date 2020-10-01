@@ -532,5 +532,11 @@ namespace AutoProjectTracker
             Type t = Type.GetType(Namespace);
             return Activator.CreateInstance(t);
         }
+
+        public static DateTime StartOfWeek(DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (DateTime.Now.DayOfWeek - startOfWeek)) % 7;
+            return DateTime.Now.AddDays(-1 * diff).Date;
+        }
     }
 }

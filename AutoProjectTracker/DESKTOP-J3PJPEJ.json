@@ -1,0 +1,14 @@
+{
+  "ServiceName": "AutoProjectTracker",
+  "LogFileName": "AutoProjectTracker.txt",
+  "LiveMarket": true,
+  "Email": "edmelson2020@gmail.com",
+
+  "AutoProjectTrackerDB": "C:/Users/ednel/source/repos/AutoProjectTracker/AutoProjectTracker/AutoProjectTracker.sqlite",
+  "EmployeeTable": "Employees",
+  "ProjectTable": "Projects",
+  "TaskTable": "Tasks",
+  "TaskHourTable": "TaskHours",
+
+  "HourlyRate": "75"
+}
