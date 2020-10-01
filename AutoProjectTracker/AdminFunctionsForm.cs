@@ -36,10 +36,7 @@ namespace AutoProjectTracker
         {
             string msg = "";
 
-            msg += "Daily Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)) + Environment.NewLine;
-            msg += "Weekly Profit = $" + ReadProfit(Utility.StartOfWeek(DayOfWeek.Sunday)) + Environment.NewLine;
-            msg += "Monthly Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)) + Environment.NewLine;
-            msg += "Yearly Profit = $" + ReadProfit(new DateTime(DateTime.Now.Year, 1, 1)) + Environment.NewLine;
+            msg += "Profit = $" + ReadProfit(startDateTimePicker.Value, endDateTimePicker.Value) + Environment.NewLine;
 
             MessageBox.Show(msg);
         }
@@ -62,7 +59,7 @@ namespace AutoProjectTracker
 
         }
 
-        public Double ReadProfit(DateTime dateTime)
+        public Double ReadProfit(DateTime StartDate, DateTime EndDate)
         {
             Double profit = 0;
 
@@ -83,7 +80,7 @@ namespace AutoProjectTracker
                 DataTable dtt = dataSet.Tables[0];
                 List<Task> tasks = dtt.DataTableToList<Task>();
 
-                sql = "select * from TaskHours where EmployeeId = " + employee.Id + " and StartDate >= '" + Utility.SetDateTime(dateTime) + "'";
+                sql = "select * from TaskHours where EmployeeId = " + employee.Id + " and StartDate >= '" + Utility.SetDateTime(StartDate) + "' and EndDate <= '" + Utility.SetDateTime(EndDate) + "'";
                 adapter = new SQLiteDataAdapter(sql, dbConnection);
                 dataSet = new DataSet();
                 adapter.Fill(dataSet);
@@ -105,6 +102,57 @@ namespace AutoProjectTracker
             }
 
             return profit;
+        }
+
+
+        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton rb = (RadioButton)sender;
+
+            if (!rb.Checked)
+                return;
+
+            switch (rb.Name)
+            {
+                case "dayRadioButton":
+                    startDateTimePicker.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    break;
+                case "weekRadioButton":
+                    startDateTimePicker.Value = Utility.StartOfWeek(DayOfWeek.Sunday);
+                    break;
+                case "monthRadioButton":
+                    startDateTimePicker.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    break;
+                case "yearRadioButton":
+                    startDateTimePicker.Value = new DateTime(DateTime.Now.Year, 1,1);
+                    break;
+            }
+        }
+
+        private void employeeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            string sql = "select * from Employees";
+            adapter = new SQLiteDataAdapter(sql, dbConnection);
+            DataSet dataSet = new DataSet();
+            adapter.Fill(dataSet);
+            DataTable dtt = dataSet.Tables[0];
+            List<Employee> employees = dtt.DataTableToList<Employee>();
+
+            foreach (Employee employee in employees)
+            {
+                taskEmployeeComboBox.Items.Add(new { Text = employee.FirstName + " " + employee.LastName, Value = employee.Id });
+            }
+
+            taskEmployeeComboBox.DisplayMember = "Text";
+            taskEmployeeComboBox.ValueMember = "Value";
+
+
+            //object o = (taskEmployeeComboBox.SelectedItem as dynamic).Value;
+        }
+
+        private void taskRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
