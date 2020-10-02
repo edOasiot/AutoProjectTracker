@@ -16,8 +16,9 @@ namespace AutoProjectTracker
     {
         Employee employee = null;
         List<Employee> employees = null;
-        List<Task> tasks = null;
         List<EmployeeRate> employeeRates = null;
+        List<Project> projects = null;
+        List<Task> tasks = null;
         public AdminFunctionsForm(Employee _employee)
         {
             InitializeComponent();
@@ -34,26 +35,22 @@ namespace AutoProjectTracker
             SetDBConnection();
 
             dayRadioButton.Checked = true;
-            allTasksRadioButton.Checked = true;
 
-            taskEmployeeComboBox.DisplayMember = "Text";
-            taskEmployeeComboBox.ValueMember = "Value";
-            
             ReadTables();
         }
 
         private void ShowProfitsB_Click(object sender, EventArgs e)
         {
-            string msg = "";
+            Int32 employeeId = 0;
+            Int32 projectId = 0;
 
-            if (allTasksRadioButton.Checked)
-                msg += "Profit = $" + ReadProfit(startDateTimePicker.Value, endDateTimePicker.Value) + Environment.NewLine;
-            else if (taskRadioButton.Checked && taskEmployeeComboBox.SelectedItem != null)
-                msg += "Profit = $" + ReadProfit(startDateTimePicker.Value, endDateTimePicker.Value, "task", Convert.ToInt32((taskEmployeeComboBox.SelectedItem as dynamic).Value)) + Environment.NewLine;
-            else if (employeeRadioButton.Checked && taskEmployeeComboBox.SelectedItem != null)
-                msg += "Profit = $" + ReadProfit(startDateTimePicker.Value, endDateTimePicker.Value, "employee", Convert.ToInt32((taskEmployeeComboBox.SelectedItem as dynamic).Value)) + Environment.NewLine;
+            if (projectComboBox.SelectedItem != null && !String.IsNullOrEmpty(projectComboBox.Text))
+                projectId = Convert.ToInt32((projectComboBox.SelectedItem as dynamic).Value);
 
-            MessageBox.Show(msg);
+            if (employeeComboBox.SelectedItem != null && !String.IsNullOrEmpty(employeeComboBox.Text))
+                employeeId = Convert.ToInt32((employeeComboBox.SelectedItem as dynamic).Value);
+
+            profitLabel.Text = "$" + CalculateProfit(startDateTimePicker.Value, endDateTimePicker.Value, employeeId, projectId) + Environment.NewLine;
         }
 
         private void WorkerB_Click(object sender, EventArgs e)
@@ -62,18 +59,32 @@ namespace AutoProjectTracker
             projectListForm.Show();
         }
 
-        public Double ReadProfit(DateTime StartDate, DateTime EndDate, string type = "", Int32 id = 0)
+        public Double CalculateProfit(DateTime StartDate, DateTime EndDate, Int32 employeeId, Int32 projectId)
         {
             Double profit = 0;
+            List<Task> projectTasks = null;
 
             try
             {
+                Project project = projects.Find(a => a.Id == projectId);
+                
+                if (project != null)
+                    projectTasks = tasks.FindAll(a => a.ProjectId == project.Id);
+
                 string sql = "select * from TaskHours where StartDate >= '" + Utility.SetDateTime(StartDate) + "' and EndDate <= '" + Utility.SetDateTime(EndDate) + "'";
 
-                if (type.Equals("task"))
-                    sql += " and TaskId = " + id;
-                else if (type.Equals("employee"))
-                    sql += " and EmployeeId = " + id;
+                if (projectTasks != null)
+                {
+                    string ids = "";
+
+                    foreach (Task task in projectTasks)
+                        ids += task.Id + ",";
+
+                    sql += " and TaskId in (" + ids.Substring(0, ids.Length - 1) + ")";
+                }
+
+                if (employeeId != 0)
+                    sql += " and EmployeeId = " + employeeId;
 
                 adapter = new SQLiteDataAdapter(sql, dbConnection);
                 DataSet dataSet = new DataSet();
@@ -124,30 +135,6 @@ namespace AutoProjectTracker
             }
         }
 
-        private void employeeRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            taskEmployeeComboBox.Text = "";
-            taskEmployeeComboBox.Items.Clear();
-
-            foreach (Employee employee in employees)
-                taskEmployeeComboBox.Items.Add(new { Text = employee.FirstName + " " + employee.LastName, Value = employee.Id });
-        }
-
-        private void taskRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            taskEmployeeComboBox.Text = "";
-            taskEmployeeComboBox.Items.Clear();
-
-            foreach (Task task in tasks)
-                taskEmployeeComboBox.Items.Add(new { Text = task.TaskName, Value = task.Id });
-        }
-
-        private void allTasksRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            taskEmployeeComboBox.Text = "";
-            taskEmployeeComboBox.Items.Clear();
-        }
-
         private void ReadTables()
         {
             string sql = "select * from Employees";
@@ -157,6 +144,20 @@ namespace AutoProjectTracker
             DataTable dtt = dataSet.Tables[0];
             employees = dtt.DataTableToList<Employee>();
 
+            sql = "select * from EmployeeRate Order By StartDate Desc";
+            adapter = new SQLiteDataAdapter(sql, dbConnection);
+            dataSet = new DataSet();
+            adapter.Fill(dataSet);
+            dtt = dataSet.Tables[0];
+            employeeRates = dtt.DataTableToList<EmployeeRate>();
+
+            sql = "select * from Projects";
+            adapter = new SQLiteDataAdapter(sql, dbConnection);
+            dataSet = new DataSet();
+            adapter.Fill(dataSet);
+            dtt = dataSet.Tables[0];
+            projects = dtt.DataTableToList<Project>();
+
             sql = "select * from Tasks";
             adapter = new SQLiteDataAdapter(sql, dbConnection);
             dataSet = new DataSet();
@@ -164,12 +165,13 @@ namespace AutoProjectTracker
             dtt = dataSet.Tables[0];
             tasks = dtt.DataTableToList<Task>();
 
-            sql = "select * from EmployeeRate Order By StartDate Desc";
-            adapter = new SQLiteDataAdapter(sql, dbConnection);
-            dataSet = new DataSet();
-            adapter.Fill(dataSet);
-            dtt = dataSet.Tables[0];
-            employeeRates = dtt.DataTableToList<EmployeeRate>();
+            employeeComboBox.Items.Add(new { Text = "", Value = "" });
+            foreach (Employee employee in employees)
+                employeeComboBox.Items.Add(new { Text = employee.FirstName + " " + employee.LastName, Value = employee.Id });
+
+            projectComboBox.Items.Add(new { Text = "", Value = "" });
+            foreach (Project project in projects)
+                projectComboBox.Items.Add(new { Text = project.ProjectName, Value = project.Id });
         }
 
     }
