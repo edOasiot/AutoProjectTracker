@@ -197,6 +197,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="AutoProjectTracker.json" />
     <None Include="AutoProjectTracker.sqlite" />
     <None Include="AutoProjectTracker_TemporaryKey.pfx" />
     <None Include="DESKTOP-BQF1NB9.json" />

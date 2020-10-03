@@ -1,0 +1,10 @@
+{
+  "ServiceName": "AutoProjectTracker",
+  "LogFileName": "AutoProjectTracker.txt",
+  "LiveMarket": true,
+  "Email": "edmelson2020@gmail.com",
+
+  "AutoProjectTrackerDB": "C:/Users/Ed/source/repos/edOasiot/AutoProjectTracker/AutoProjectTracker/AutoProjectTracker.sqlite",
+  
+  "HourlyRate": "75"
+}
