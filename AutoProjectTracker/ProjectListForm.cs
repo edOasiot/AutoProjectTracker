@@ -23,14 +23,12 @@ namespace AutoProjectTracker
             StartPosition = FormStartPosition.Manual;
             Location = new Point(55, 55);
 
-            TableName = Utility.settings.ProjectTable;
+            TableName = "Projects";
             KeyColumn = "ProjectName";
             TableType = "Project";
 
             if (employee.Role.Equals(Convert.ToInt32(Enums.Roles.Worker)))
                 ListColumnsNotShown = "Phone,Email,HourlyRate,CurrentProfit";
-
-            SetDBConnection();
 
             List<Project> projects = ReadRecords<Project>();
             dataGridView1.DataSource = projects;
@@ -44,7 +42,6 @@ namespace AutoProjectTracker
                 else
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
-
         }
 
         private void CancelB_Click(object sender, EventArgs e)
@@ -63,6 +60,12 @@ namespace AutoProjectTracker
 
             TaskListForm taskListForm = new TaskListForm(employee.Id, Convert.ToInt32(id));
             taskListForm.ShowDialog();
+        }
+
+        private void newB_Click(object sender, EventArgs e)
+        {
+            ProjectForm projectForm = new ProjectForm(0);
+            projectForm.ShowDialog();
         }
     }
 }

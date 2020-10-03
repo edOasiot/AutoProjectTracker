@@ -1,0 +1,56 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "EmployeeRate" (
+	"Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"EmployeeId"	INTEGER NOT NULL,
+	"StartDate"	TEXT NOT NULL,
+	"Rate"	REAL NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "TaskHours" (
+	"Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"EmployeeId"	INTEGER NOT NULL,
+	"TaskId"	INTEGER NOT NULL,
+	"StartDate"	TEXT NOT NULL,
+	"EndDate"	TEXT
+);
+CREATE TABLE IF NOT EXISTS "Projects" (
+	"Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"ProjectName"	TEXT NOT NULL,
+	"OwnerName"	TEXT NOT NULL,
+	"Phone"	TEXT,
+	"Email"	TEXT,
+	"Year"	TEXT,
+	"Make"	TEXT,
+	"Model"	TEXT,
+	"Color"	TEXT,
+	"StartDate"	TEXT,
+	"EndDate"	TEXT,
+	"HourlyRate"	INTEGER,
+	"CurrentHours"	REAL,
+	"CurrentProfit"	INTEGER
+);
+CREATE TABLE IF NOT EXISTS "Tasks" (
+	"Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"ProjectId"	INTEGER NOT NULL,
+	"TaskName"	TEXT NOT NULL,
+	"StartDate"	TEXT NOT NULL,
+	"EndDate"	TEXT,
+	"HourlyRate"	INTEGER NOT NULL,
+	"CurrentHours"	REAL
+);
+CREATE TABLE IF NOT EXISTS "Employees" (
+	"Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"FirstName"	TEXT NOT NULL,
+	"LastName"	TEXT NOT NULL,
+	"BirthDate"	TEXT NOT NULL,
+	"StartDate"	TEXT NOT NULL,
+	"EndDate"	TEXT,
+	"Username"	TEXT NOT NULL,
+	"Password"	TEXT NOT NULL,
+	"Address"	TEXT,
+	"State"	TEXT,
+	"Zip"	TEXT,
+	"Phone"	TEXT,
+	"Email"	TEXT,
+	"Role"	INTEGER
+);
+COMMIT;

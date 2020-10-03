@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -19,15 +21,32 @@ namespace AutoProjectTracker
         public string KeyColumnValue;
         public string TableType;
         public string ListColumnsNotShown;
+        public bool InsertMode = true;
         public SQLiteConnection dbConnection;
         public SQLiteDataAdapter adapter;
         public MyForm()
         {
             InitializeComponent();
+
+            if (!IsInDesigner)
+                SetDBConnection();
         }
 
+        protected static bool IsInDesigner
+        {
+            get { return (Assembly.GetEntryAssembly() == null); }
+        }
         public void SetDBConnection()
         {
+            if (!File.Exists(Utility.settings.AutoProjectTrackerDB.Replace("/", "\\")))
+            {
+                Int32 index = Utility.settings.AutoProjectTrackerDB.LastIndexOf("/");
+                string workingDir = Utility.settings.AutoProjectTrackerDB.Substring(0, index).Replace("/", "\\");
+                string db = Utility.settings.AutoProjectTrackerDB.Substring(index + 1);
+
+                Utility.RunProcess(workingDir, @"C:\sqlite\sqlite3.exe", db + " \".read " + db + ".sql\"");
+            }
+
             if (dbConnection == null)
                 dbConnection = new SQLiteConnection("Data Source=" + Utility.settings.AutoProjectTrackerDB + ";Version=3;");
 
@@ -191,7 +210,7 @@ namespace AutoProjectTracker
             try
             {
                 String sql = "select Sum(Cast ((JulianDay(EndDate) - JulianDay(StartDate)) *24 * 60 As Integer)) from " 
-                    + Utility.settings.TaskHourTable + " Where TaskId = " + taskId;
+                    + "TaskHours Where TaskId = " + taskId;
 
                 SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
                 hours = Math.Round(Convert.ToDecimal(Convert.ToInt32(command.ExecuteScalar()) / 60.00), 2);

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.newB = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,11 +43,23 @@
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowStateChanged += new System.Windows.Forms.DataGridViewRowStateChangedEventHandler(this.dataGridView1_RowStateChanged);
             // 
+            // newB
+            // 
+            this.newB.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.newB.Location = new System.Drawing.Point(0, 0);
+            this.newB.Name = "newB";
+            this.newB.Size = new System.Drawing.Size(43, 23);
+            this.newB.TabIndex = 2;
+            this.newB.Text = "New";
+            this.newB.UseVisualStyleBackColor = false;
+            this.newB.Click += new System.EventHandler(this.newB_Click);
+            // 
             // ProjectListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1052, 475);
+            this.Controls.Add(this.newB);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ProjectListForm";
             this.Text = "Projects";
@@ -58,6 +71,7 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button newB;
     }
 }
 

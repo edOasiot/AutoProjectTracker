@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Web.Security;
+using System.IO;
 
 namespace AutoProjectTracker
 {
@@ -23,11 +24,9 @@ namespace AutoProjectTracker
 
             Username.Text = "ed";
 
-            TableName = Utility.settings.EmployeeTable;
+            TableName = "Employees";
             KeyColumn = "Username";
             TableType = "Employee";
-
-            SetDBConnection();
         }
 
         private void LoginB_Click(object sender, EventArgs e)

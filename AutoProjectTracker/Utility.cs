@@ -538,5 +538,22 @@ namespace AutoProjectTracker
             int diff = (7 + (DateTime.Now.DayOfWeek - startOfWeek)) % 7;
             return DateTime.Now.AddDays(-1 * diff).Date;
         }
+
+        public static void RunProcess(string workingDir, string cmd, string args)
+        {
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            //startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.WorkingDirectory = workingDir;
+            startInfo.FileName = cmd;
+            startInfo.Arguments = args;
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardError = true;
+            process.StartInfo = startInfo;
+            process.Start();
+            string stdout = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+        }
+
     }
 }

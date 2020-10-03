@@ -23,12 +23,10 @@ namespace AutoProjectTracker
             StartPosition = FormStartPosition.Manual;
             Location = new Point(85, 85);
 
-            TableName = Utility.settings.TaskTable;
+            TableName = "Tasks";
             KeyColumn = "ProjectId";
             KeyColumnValue = projectId.ToString();
             TableType = "Task";
-
-            SetDBConnection();
 
             List<Task> tasks = ReadRecords<Task>();
             dataGridView1.DataSource = tasks;
@@ -89,6 +87,11 @@ namespace AutoProjectTracker
                 MessageBox.Show((e.RowIndex + 1) + "  Row - ShowHours button clicked ");
             else if (e.ColumnIndex == index1)
                 MessageBox.Show((e.RowIndex + 1) + "  Row - EndTask button clicked ");
+        }
+
+        private void newB_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

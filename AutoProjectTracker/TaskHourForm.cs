@@ -21,12 +21,10 @@ namespace AutoProjectTracker
             StartPosition = FormStartPosition.Manual;
             Location = new Point(115, 115);
 
-            TableName = Utility.settings.TaskHourTable;
+            TableName = "TaskHours";
             KeyColumn = "EmployeeId,TaskId";
             KeyColumnValue = employeeId.ToString() + "," + taskId.ToString();
             TableType = "TaskHour";
-
-            SetDBConnection();
 
             SetDefaults();
         }

@@ -10,12 +10,11 @@ namespace AutoProjectTracker
         {
             InitializeComponent();
 
-            TableName = Utility.settings.EmployeeTable;
+            TableName = "Employees";
             KeyColumn = "Username";
             KeyColumnValue = Username;
             TableType = "Employee";
 
-            SetDBConnection();
             ReadRecord();
         }
 

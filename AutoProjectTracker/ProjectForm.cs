@@ -13,20 +13,19 @@ namespace AutoProjectTracker
 {
     public partial class ProjectForm : MyForm
     {
-        public ProjectForm(string ProjectName)
+        public ProjectForm(Int32 projectId)
         {
             InitializeComponent();
 
-            TableName = Utility.settings.ProjectTable;
-            KeyColumn = "ProjectName";
-            KeyColumnValue = ProjectName;
+            TableName = "Projects";
+            KeyColumn = "Id";
+            KeyColumnValue = projectId.ToString();
             TableType = "Project";
 
-            SetDBConnection();
-            ReadRecord();
+            if (ReadRecord() != null)
+                InsertMode = false;
 
             SetDefaults();
-
         }
 
         private void SetDefaults()
@@ -34,6 +33,10 @@ namespace AutoProjectTracker
             if (HourlyRate.Text.Length.Equals(0))
                 HourlyRate.Text = Utility.settings.HourlyRate.ToString();
 
+            if (InsertMode)
+                SaveInsertB.Text = "Insert";
+            else
+                SaveInsertB.Text = "Save";
         }
 
         private void CancelB_Click(object sender, EventArgs e)
@@ -41,5 +44,12 @@ namespace AutoProjectTracker
             Close();
         }
 
+        private void SaveInsertB_Click(object sender, EventArgs e)
+        {
+            if (InsertMode)
+                InsertRecord();
+            else
+                UpdateRecord();
+        }
     }
 }

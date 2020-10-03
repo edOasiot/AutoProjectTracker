@@ -28,12 +28,6 @@ namespace AutoProjectTracker
             StartPosition = FormStartPosition.Manual;
             Location = new Point(55, 55);
 
-            TableName = Utility.settings.ProjectTable;
-            KeyColumn = "ProjectName";
-            TableType = "Project";
-
-            SetDBConnection();
-
             dayRadioButton.Checked = true;
 
             ReadTables();

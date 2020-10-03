@@ -32,7 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.OwnerName = new System.Windows.Forms.TextBox();
-            this.SaveB = new System.Windows.Forms.Button();
+            this.SaveInsertB = new System.Windows.Forms.Button();
             this.Email = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -90,14 +90,17 @@
             this.OwnerName.Size = new System.Drawing.Size(210, 20);
             this.OwnerName.TabIndex = 3;
             // 
-            // SaveB
+            // SaveInsertB
             // 
-            this.SaveB.Location = new System.Drawing.Point(370, 354);
-            this.SaveB.Name = "SaveB";
-            this.SaveB.Size = new System.Drawing.Size(75, 23);
-            this.SaveB.TabIndex = 27;
-            this.SaveB.Text = "Save";
-            this.SaveB.UseVisualStyleBackColor = true;
+            this.SaveInsertB.Location = new System.Drawing.Point(370, 354);
+            this.SaveInsertB.Name = "SaveInsertB";
+            this.SaveInsertB.Size = new System.Drawing.Size(75, 23);
+            this.SaveInsertB.TabIndex = 27;
+            this.SaveInsertB.Text = "Save";
+            this.SaveInsertB.UseVisualStyleBackColor = true;
+            this.SaveInsertB.Click += new System.EventHandler(this.SaveInsertB_Click);
+            this.SaveInsertB.Enter += new System.EventHandler(this.SaveInsertB_Click);
+            this.SaveInsertB.Leave += new System.EventHandler(this.CancelB_Click);
             // 
             // Email
             // 
@@ -197,6 +200,7 @@
             // 
             // CurrentProfit
             // 
+            this.CurrentProfit.Enabled = false;
             this.CurrentProfit.Location = new System.Drawing.Point(130, 354);
             this.CurrentProfit.Name = "CurrentProfit";
             this.CurrentProfit.Size = new System.Drawing.Size(210, 20);
@@ -222,6 +226,7 @@
             // 
             // CurrentHours
             // 
+            this.CurrentHours.Enabled = false;
             this.CurrentHours.Location = new System.Drawing.Point(130, 327);
             this.CurrentHours.Name = "CurrentHours";
             this.CurrentHours.Size = new System.Drawing.Size(210, 20);
@@ -288,11 +293,11 @@
             // 
             // ProjectForm
             // 
-            this.AcceptButton = this.SaveB;
+            this.AcceptButton = this.SaveInsertB;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelB;
-            this.ClientSize = new System.Drawing.Size(471, 416);
+            this.ClientSize = new System.Drawing.Size(471, 390);
             this.Controls.Add(this.CancelB);
             this.Controls.Add(this.CurrentProfit);
             this.Controls.Add(this.label9);
@@ -316,7 +321,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Phone);
-            this.Controls.Add(this.SaveB);
+            this.Controls.Add(this.SaveInsertB);
             this.Controls.Add(this.OwnerName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -334,7 +339,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox OwnerName;
-        private System.Windows.Forms.Button SaveB;
+        private System.Windows.Forms.Button SaveInsertB;
         private System.Windows.Forms.TextBox Email;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
